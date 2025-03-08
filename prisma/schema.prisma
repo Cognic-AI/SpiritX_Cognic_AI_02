@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  username     String    @id @map("username")
+  password     String    @map("password")
+  displayName  String?   @map("display_name")
+  budget       Float     @default(9000000.00) @map("budget")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  teams        Team[]
+
+  @@map("users")
+}
+
+model Player {
+  id              Int           @id @default(autoincrement()) @map("player_id")
+  name            String        @map("name")
+  university      String        @map("university")
+  category        String        @map("category")
+  totalRuns       Int           @map("total_runs")
+  ballsFaced      Int           @map("balls_faced")
+  inningsPlayed   Int           @map("innings_played")
+  wickets         Int           @map("wickets")
+  oversBowled     Float         @map("overs_bowled")
+  runsConceded    Int           @map("runs_conceded")
+  battingStrikeRate  Float?     @map("batting_strike_rate")
+  battingAverage     Float?     @map("batting_average")
+  bowlingBalls       Float?     @map("bowling_balls")
+  bowlingStrikeRate  Float?     @map("bowling_strike_rate")
+  economyRate        Float?     @map("economy_rate")
+  playerPoints       Float?     @map("player_points")
+  playerValue        Float?     @map("player_value")
+  teamPlayers        TeamPlayer[]
+
+  @@map("players")
+}
+
+model Team {
+  id            Int           @id @default(autoincrement()) @map("team_id")
+  username      String        @map("username")
+  teamName      String?       @map("team_name")
+  playerCount   Int           @default(0) @map("player_count")
+  totalPoints   Float         @default(0) @map("total_points")
+  totalValue    Float         @default(0) @map("total_value")
+  isComplete    Boolean?      @map("is_complete")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @default(now()) @updatedAt @map("updated_at")
+  user          User          @relation(fields: [username], references: [username], onDelete: Cascade)
+  teamPlayers   TeamPlayer[]
+
+  @@map("teams")
+}
+
+model TeamPlayer {
+  teamId        Int           @map("team_id")
+  playerId      Int           @map("player_id")
+  addedAt       DateTime      @default(now()) @map("added_at")
+  team          Team          @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  player        Player        @relation(fields: [playerId], references: [id], onDelete: Cascade)
+
+  @@id([teamId, playerId])
+  @@map("team_players")
+}
