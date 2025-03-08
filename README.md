@@ -8,6 +8,7 @@ Spirit11 is a fantasy cricket league where users can build their own dream teams
 - **Players Management:** View, add, edit, and delete players
 - **Player Stats:** Detailed statistics for each player
 - **Tournament Summary:** Overall analysis of all players in the tournament
+- **Admin Dashboard:** Quick overview of tournament statistics
 
 ### User Interface
 - **Authentication:** Sign up and login using username and password
@@ -41,7 +42,7 @@ The value is rounded to the nearest multiple of 50,000.
 - **Backend:** Next.js API Routes
 - **Database:** MySQL
 - **ORM:** Prisma
-- **Authentication:** NextAuth.js
+- **Authentication:** NextAuth.js with role-based access control
 
 ## 🔧 Setup Instructions
 
@@ -92,12 +93,19 @@ NEXTAUTH_SECRET="your-nextauth-secret-key-here"
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
-### Step 4: Start the development server
+### Step 4: Set up admin access
+After setting up the database, ensure the admin user is created by visiting:
+```
+http://localhost:3000/api/setup-admin
+```
+This endpoint will create the admin user if it doesn't exist or update its password if it does.
+
+### Step 5: Start the development server
 ```bash
 npm run dev
 ```
 
-### Step 5: Access the application
+### Step 6: Access the application
 Open your browser and navigate to `http://localhost:3000`
 
 ## 📱 User Guide
@@ -108,6 +116,7 @@ Open your browser and navigate to `http://localhost:3000`
   - Username: `admin`
   - Password: `Admin@2025`
 - Access the admin panel at `/admin` to manage players, view statistics, and analyze tournament data
+- The admin dashboard shows quick tournament statistics including highest run scorers and wicket takers
 
 ### Regular User
 1. Sign up with a username and password or use the demo account:
@@ -123,7 +132,7 @@ Open your browser and navigate to `http://localhost:3000`
 
 The complete database schema is available in the `database.sql` file in the root directory. This file contains:
 
-- Table definitions for users, roles, players, teams, and team_players
+- Table definitions for users, user_roles, players, teams, and team_players
 - Calculated fields for player statistics (battingStrikeRate, battingAverage, etc.)
 - Calculation logic for player points and player value
 - Views for tournament summary, leaderboard, and player statistics
@@ -133,8 +142,9 @@ The complete database schema is available in the `database.sql` file in the root
 ### Key Database Features
 
 1. **Role-Based Authentication**
-   - Admin users have access to management features
-   - Regular users can only manage their own teams
+   - Admin users (role_id = 1) have access to management features
+   - Regular users (role_id = 2) can only manage their own teams
+   - Authentication is managed using NextAuth.js with custom session handling
 
 2. **Proper Null Handling**
    - Statistics are properly handled when division by zero would occur
@@ -142,10 +152,15 @@ The complete database schema is available in the `database.sql` file in the root
 
 3. **Tournament Summary View**
    - Quickly access overall runs, wickets, and top performers
+   - Displayed on the admin dashboard
 
 4. **Admin Management**
    - Dedicated stored procedures for CRUD operations
    - Player change tracking for monitoring updates
+
+5. **Security Features**
+   - Role-based access control for routes and API endpoints
+   - Consistent navigation bar with context-aware links
 
 This SQL file is particularly useful for team members who want to understand the database structure or need to set up the database manually.
 
