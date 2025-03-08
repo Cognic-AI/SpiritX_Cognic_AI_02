@@ -6,6 +6,9 @@ Spirit11 is a fantasy cricket league where users can build their own dream teams
 
 ### Admin Panel
 - **Players Management:** View, add, edit, and delete players
+  - Add players with detailed batting and bowling statistics
+  - Edit existing player information and performance metrics
+  - Delete players who are not part of any team
 - **Player Stats:** Detailed statistics for each player
 - **Tournament Summary:** Overall analysis of all players in the tournament
 - **Admin Dashboard:** Quick overview of tournament statistics
