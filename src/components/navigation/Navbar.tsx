@@ -11,16 +11,20 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isAdminRoute = pathname.startsWith("/admin");
+  // Consider all non-landing and non-auth pages as user routes
   const isUserRoute = !isAdminRoute && pathname !== "/" && !pathname.startsWith("/auth");
 
+  // Set navigation items based on the route type
   const navItems = isAdminRoute
     ? [
+        { name: "Dashboard", href: "/admin" },
         { name: "Players", href: "/admin/players" },
         { name: "Player Stats", href: "/admin/player-stats" },
         { name: "Tournament Summary", href: "/admin/tournament-summary" },
       ]
     : isUserRoute
     ? [
+        { name: "Dashboard", href: "/dashboard" },
         { name: "Players", href: "/players" },
         { name: "Select Team", href: "/select-team" },
         { name: "My Team", href: "/team" },
@@ -44,23 +48,21 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          {navItems.length > 0 && (
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-4 items-center">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`${
-                    pathname === item.href
-                      ? "bg-indigo-800 text-white"
-                      : "text-white hover:bg-indigo-700"
-                  } px-3 py-2 rounded-md text-sm font-medium`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          )}
+          <div className="hidden sm:ml-6 sm:flex sm:space-x-4 items-center">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`${
+                  pathname === item.href
+                    ? "bg-indigo-800 text-white"
+                    : "text-white hover:bg-indigo-700"
+                } px-3 py-2 rounded-md text-sm font-medium`}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
 
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {session ? (
