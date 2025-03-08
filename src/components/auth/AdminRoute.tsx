@@ -4,9 +4,8 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-// In a real app, you'd have a proper role-based system
-// For this demo, we'll consider a specific username as admin
-const ADMIN_USERNAME = "admin";
+// Define admin role ID
+const ADMIN_ROLE_ID = 1;
 
 export default function AdminRoute({
   children,
@@ -22,7 +21,7 @@ export default function AdminRoute({
     // If user is not logged in or not an admin, redirect
     if (!session) {
       router.push("/auth/login?callbackUrl=/admin");
-    } else if (session.user?.id !== ADMIN_USERNAME) {
+    } else if (session.user?.role_id !== ADMIN_ROLE_ID) {
       router.push("/dashboard"); // Redirect non-admin users to dashboard
     }
   }, [session, status, router]);
@@ -36,7 +35,7 @@ export default function AdminRoute({
     );
   }
 
-  return session && session.user?.id === ADMIN_USERNAME ? (
+  return session && session.user?.role_id === ADMIN_ROLE_ID ? (
     <>{children}</>
   ) : null;
 } 

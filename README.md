@@ -103,12 +103,16 @@ Open your browser and navigate to `http://localhost:3000`
 ## 📱 User Guide
 
 ### Admin Access
-- Username: `admin`
-- Password: `admin123`
-- Navigate to `/admin` to access the admin panel
+- Navigate to `/auth/login`
+- Use the following credentials:
+  - Username: `admin`
+  - Password: `Admin@2025`
+- Access the admin panel at `/admin` to manage players, view statistics, and analyze tournament data
 
 ### Regular User
-1. Sign up with a username and password
+1. Sign up with a username and password or use the demo account:
+   - Username: `spiritx_2025`
+   - Password: `SpiritX@2025`
 2. Browse players in the "Players" tab
 3. Build your team in the "Select Team" tab
 4. Manage your team in the "Team" tab
@@ -119,11 +123,29 @@ Open your browser and navigate to `http://localhost:3000`
 
 The complete database schema is available in the `database.sql` file in the root directory. This file contains:
 
-- Table definitions for users, players, teams, and team_players
+- Table definitions for users, roles, players, teams, and team_players
 - Calculated fields for player statistics (battingStrikeRate, battingAverage, etc.)
 - Calculation logic for player points and player value
+- Views for tournament summary, leaderboard, and player statistics
+- Stored procedures for admin and user operations
 - Triggers for team management (adding/removing players)
-- Sample data for testing
+
+### Key Database Features
+
+1. **Role-Based Authentication**
+   - Admin users have access to management features
+   - Regular users can only manage their own teams
+
+2. **Proper Null Handling**
+   - Statistics are properly handled when division by zero would occur
+   - Bowling statistics show as "Undefined" when appropriate
+
+3. **Tournament Summary View**
+   - Quickly access overall runs, wickets, and top performers
+
+4. **Admin Management**
+   - Dedicated stored procedures for CRUD operations
+   - Player change tracking for monitoring updates
 
 This SQL file is particularly useful for team members who want to understand the database structure or need to set up the database manually.
 

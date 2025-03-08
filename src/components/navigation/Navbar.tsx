@@ -5,13 +5,17 @@ import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 
+// Admin role ID for identification
+const ADMIN_ROLE_ID = 1;
+
 export default function Navbar() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Check if current user is admin
+  const isAdmin = session?.user?.role_id === ADMIN_ROLE_ID;
   const isAdminRoute = pathname.startsWith("/admin");
-  // Consider all non-landing and non-auth pages as user routes
   const isUserRoute = !isAdminRoute && pathname !== "/" && !pathname.startsWith("/auth");
 
   // Set navigation items based on the route type
@@ -68,6 +72,27 @@ export default function Navbar() {
             {session ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm">{session.user?.name || session.user?.id || "User"}</span>
+                
+                {/* Admin Dashboard Button - Only visible to admin users and when not on admin routes */}
+                {isAdmin && !isAdminRoute && (
+                  <Link
+                    href="/admin"
+                    className="bg-green-600 hover:bg-green-700 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Admin Dashboard
+                  </Link>
+                )}
+                
+                {/* User Dashboard Button - Only visible to admin users when on admin routes */}
+                {isAdmin && isAdminRoute && (
+                  <Link
+                    href="/dashboard"
+                    className="bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    User Dashboard
+                  </Link>
+                )}
+                
                 <button
                   onClick={() => signOut({ callbackUrl: "/" })}
                   className="bg-indigo-700 hover:bg-indigo-800 px-3 py-2 rounded-md text-sm font-medium"
@@ -134,6 +159,29 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
+            
+            {/* Admin Dashboard Button for mobile - Only visible to admin users when not on admin routes */}
+            {isAdmin && !isAdminRoute && (
+              <Link
+                href="/admin"
+                className="block px-3 py-2 bg-green-600 text-white rounded-md text-base font-medium mt-1"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Admin Dashboard
+              </Link>
+            )}
+            
+            {/* User Dashboard Button for mobile - Only visible to admin users when on admin routes */}
+            {isAdmin && isAdminRoute && (
+              <Link
+                href="/dashboard"
+                className="block px-3 py-2 bg-blue-600 text-white rounded-md text-base font-medium mt-1"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                User Dashboard
+              </Link>
+            )}
+            
             {session ? (
               <button
                 onClick={() => {

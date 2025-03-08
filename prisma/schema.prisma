@@ -13,12 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model UserRole {
+  role_id    Int      @id @default(autoincrement()) @map("role_id")
+  role_name  String   @map("role_name")
+  users      User[]
+
+  @@map("user_roles")
+}
+
 model User {
   username     String    @id @map("username")
   password     String    @map("password")
   displayName  String?   @map("display_name")
   budget       Float     @default(9000000.00) @map("budget")
   createdAt    DateTime  @default(now()) @map("created_at")
+  role_id      Int       @default(2) @map("role_id")
+  role         UserRole  @relation(fields: [role_id], references: [role_id])
   teams        Team[]
 
   @@map("users")
