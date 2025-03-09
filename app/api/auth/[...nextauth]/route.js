@@ -30,10 +30,8 @@ const handler = NextAuth({
 
           const user = users[0];
 
-          // For simplicity, we're not using bcrypt to verify passwords in this project
-          // In a real application, you should use bcrypt.compare to verify the password
-          // const passwordMatch = await bcrypt.compare(credentials.password, user.password);
-          const passwordMatch = credentials.password === user.password;
+          // Use bcrypt to verify the password
+          const passwordMatch = await bcrypt.compare(credentials.password, user.password);
 
           if (!passwordMatch) {
             return null;
