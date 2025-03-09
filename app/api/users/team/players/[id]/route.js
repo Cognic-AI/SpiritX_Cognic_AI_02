@@ -83,8 +83,6 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    session.user.budget = updatedUser[0].budget;
-
     return NextResponse.json({
       message: "Player added to team successfully",
       result: resultMessage,
