@@ -146,14 +146,15 @@ CREATE VIEW leaderboard AS
 SELECT 
     u.username,
     u.display_name,
+    t.team_name,
     t.total_points,
-    t.is_complete
+    t.total_value
 FROM 
     users u
 JOIN 
     teams t ON u.username = t.username
 WHERE 
-    u.role_id = 2  -- Only show regular users (not admins)
+    u.role_id = 2  AND t.is_complete = 1 -- Only show regular users (not admins)
 ORDER BY 
     t.total_points DESC;
 
