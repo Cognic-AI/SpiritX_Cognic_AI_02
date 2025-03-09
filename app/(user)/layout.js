@@ -12,49 +12,48 @@ export default function UserLayout({ children }) {
 
   // Load team status when session is available
   useEffect(() => {
+    // Here we would fetch the user's team status
+    // For now, just mock the data
+    setTeamStatus({
+      count: 0,
+      total: 11,
+    });
     if (status === 'authenticated') {
-      // Here we would fetch the user's team status
+      // Here we would fetch the user's team composition
       // For now, just mock the data
-      setTeamStatus({
-        count: 0,
-        total: 11,
-      });
-      if (status === 'authenticated') {
-        // Here we would fetch the user's team composition
-        // For now, just mock the data
-        const fetchTeam = async () => {
-          try {
-            const res = await fetch('/api/users/team', {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
+      const fetchTeam = async () => {
+        try {
+          const res = await fetch('/api/users/team', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
 
-            if (!res.ok) throw new Error('Failed to fetch players');
+          if (!res.ok) throw new Error('Failed to fetch players');
 
-            const data = await res.json();
+          const data = await res.json();
 
-            const teamData = data.teamInfo || {
-              totalPlayers: 0,
-              totalValue: 0,
-              totalPoints: 0,
-              isComplete: false,
-            };
-            // Extract and set team information
-            setTeamStatus({
-              count: teamData.player_count || 0,
-              total: 11,
-            });
-          }
-          catch (error) {
-            console.error('Error fetching players:', error);
-            setLoading(false);
-          }
-        };
-        fetchTeam();
-      }
+          const teamData = data.teamInfo || {
+            totalPlayers: 0,
+            totalValue: 0,
+            totalPoints: 0,
+            isComplete: false,
+          };
+          // Extract and set team information
+          setTeamStatus({
+            count: teamData.player_count || 0,
+            total: 11,
+          });
+        }
+        catch (error) {
+          console.error('Error fetching players:', error);
+          setLoading(false);
+        }
+      };
+      fetchTeam();
     }
+
   }, [status, session]);
 
   const handleSignOut = async () => {
