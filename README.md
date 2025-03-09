@@ -42,9 +42,8 @@ DB_NAME = Database name (default: spirit11)
 
 # Authentication
 NEXTAUTH_SECRET=your_generated_secret_key
-  # Generate a random string using OpenSSL
-  openssl rand -base64 32
-  
+  # Generate a random string using OpenSSL - openssl rand -base64 32
+
 # AI Integration
 GEMINI_API_KEY=your_gemini_api_key
 ```
