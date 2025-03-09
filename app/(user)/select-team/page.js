@@ -11,7 +11,11 @@ export default function SelectTeamPage() {
     { id: 'bowler', name: 'Bowler', count: 0, recommended: 4 },
     { id: 'all-rounder', name: 'All-Rounder', count: 0, recommended: 2 }
   ]);
+  const [teamName, setTeamName] = useState("My Team");
+  const [isEditing, setIsEditing] = useState(false);
+
   const [teamStats, setTeamStats] = useState({
+    teamName: "My Team",
     totalPlayers: 0,
     totalValue: 0,
     totalPoints: 0,
@@ -21,9 +25,41 @@ export default function SelectTeamPage() {
     isComplete: false
   });
   const [loading, setLoading] = useState(true);
+  const handleEditClick = () => setIsEditing(true);
+  const handleSaveClick = async () => {
+    setIsEditing(false);
+
+    try {
+      const res = await fetch(`/api/users/team/name/${teamName}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to update team name");
+      }
+
+      console.log("Team name updated successfully:", data.message);
+    } catch (error) {
+      console.error("Error updating team name:", error.message);
+    }
+  };
+
+  const handleNameChange = (e) => {
+    setTeamName(e.target.value);
+    setTeamStats({
+      ...teamStats,
+      teamName: e.target.value
+    });
+  };
 
   useEffect(() => {
     setTeamStats({
+      teamName: "My Team",
       totalPlayers: 0,
       totalValue: 0,
       totalPoints: 0,
@@ -56,11 +92,14 @@ export default function SelectTeamPage() {
           };
           // Extract and set team information
           setTeamStats({
+            teamName: teamData.team_name || "My Team",
             totalPlayers: teamData.player_count || 0,
             totalValue: parseFloat(teamData.total_value) || 0,
             totalPoints: parseFloat(teamData.total_points) || 0,
             isComplete: teamData.is_complete === 1,
           });
+
+          setTeamName(teamData.team_name || "My Team");
 
           // Set players data
           const players = data.players || [];
@@ -114,6 +153,36 @@ export default function SelectTeamPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Select Your Team</h1>
+
+      {/* Editable Team Name Section */}
+      <div className="mb-4 flex items-center gap-2">
+        {isEditing ? (
+          <input
+            type="text"
+            value={teamName}
+            onChange={handleNameChange}
+            className="border p-2 rounded-md flex-1"
+          />
+        ) : (
+          <p className="text-gray-800 font-semibold">{teamName}</p>
+        )}
+
+        {isEditing ? (
+          <button
+            onClick={handleSaveClick}
+            className="bg-green-500 text-white px-3 py-1 rounded-md"
+          >
+            Save
+          </button>
+        ) : (
+          <button
+            onClick={handleEditClick}
+            className="bg-blue-500 text-white px-3 py-1 rounded-md"
+          >
+            Edit
+          </button>
+        )}
+      </div>
 
       <div className="bg-white p-4 rounded-md shadow-md mb-6">
         <h2 className="text-lg font-semibold mb-2">Team Composition</h2>
