@@ -16,19 +16,58 @@ export default function TeamPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Reset team stats and loading state
+    setTeam([]);
+    setTeamStats({
+      totalPlayers: 0,
+      totalValue: 0,
+      totalPoints: 0,
+      isComplete: false
+    });
     if (status === 'authenticated') {
-      // Here we would fetch the user's team
-      // For now, just mock the data
-      setTeam([]);
-      setTeamStats({
-        totalPlayers: 0,
-        totalValue: 0,
-        totalPoints: 0,
-        isComplete: false
-      });
+      const fetchTeam = async () => {
+        try {
+          const res = await fetch('/api/users/team', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          console.log(res);
+          if (!res.ok) throw new Error('Failed to fetch players');
+
+          const data = await res.json();
+
+          const teamData = data.teamInfo || {
+            totalPlayers: 0,
+            totalValue: 0,
+            totalPoints: 0,
+            isComplete: false,
+          };
+          // Extract and set team information
+          setTeamStats({
+            totalPlayers: teamData.player_count || 0,
+            totalValue: parseFloat(teamData.total_value) || 0,
+            totalPoints: parseFloat(teamData.total_points) || 0,
+            isComplete: teamData.is_complete === 1,
+          });
+
+          // Set players data
+          const players = data.players || [];
+          setTeam(players);
+
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching players:', error);
+          setLoading(false);
+        }
+      };
+
+      fetchTeam();
       setLoading(false);
     }
-  }, [status]);
+  }, [status, session]); // Ensure that useEffect re-runs when session changes
 
   const handleRemovePlayer = (playerId) => {
     // Here we would call an API to remove the player from the team
@@ -49,7 +88,7 @@ export default function TeamPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">My Team</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white p-4 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-2">Team Status</h2>
@@ -66,7 +105,7 @@ export default function TeamPage() {
             </Link>
           </div>
         </div>
-        
+
         <div className="bg-white p-4 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-2">Team Value</h2>
           <div className="text-center py-4">
@@ -82,7 +121,7 @@ export default function TeamPage() {
             </Link>
           </div>
         </div>
-        
+
         <div className="bg-white p-4 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-2">Team Points</h2>
           <div className="text-center py-4">
@@ -103,7 +142,7 @@ export default function TeamPage() {
           </div>
         </div>
       </div>
-      
+
       {team.length > 0 ? (
         <div className="bg-white p-4 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-4">Your Selected Players</h2>
