@@ -12,7 +12,6 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  console.log(session.user.email);
 
   try {
     const results = await executeStoredProcedure('get_user_team_details', [session.user.email]);
