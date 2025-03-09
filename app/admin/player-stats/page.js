@@ -104,10 +104,6 @@ export default function PlayerStatsPage() {
                   <p className="text-sm text-gray-500">Value</p>
                   <p className="font-semibold">Rs. {player.player_value?.toLocaleString()}</p>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-500">Points</p>
-                  <p className="font-semibold">{player.player_points}</p>
-                </div>
                 {player.category === 'Batsman' || player.category === 'All-Rounder' ? (
                   <>
                     <div>
@@ -134,8 +130,6 @@ export default function PlayerStatsPage() {
                           : player.bowling_strike_rate || 0}
                       </p>
                     </div>
-
-
                     <div>
                       <p className="text-sm text-gray-500">Wickets</p>
                       <p className="font-semibold">{player.wickets}</p>
@@ -157,4 +151,4 @@ export default function PlayerStatsPage() {
       </div>
     </div>
   );
-} 
+}

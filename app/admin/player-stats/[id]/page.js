@@ -77,16 +77,10 @@ export default function PlayerDetailPage({ params }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="bg-blue-50 p-4 rounded-md">
-              <h2 className="text-xl font-semibold mb-4">Player Value & Points</h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">Player Value</p>
-                  <p className="text-2xl font-bold">Rs. {player.player_value?.toLocaleString()}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Player Points</p>
-                  <p className="text-2xl font-bold">{player.player_points}</p>
-                </div>
+              <h2 className="text-xl font-semibold mb-4">Player Value</h2>
+              <div>
+                <p className="text-sm text-gray-500">Player Value</p>
+                <p className="text-2xl font-bold">Rs. {player.player_value?.toLocaleString()}</p>
               </div>
             </div>
 
@@ -205,4 +199,4 @@ export default function PlayerDetailPage({ params }) {
       </div>
     </div>
   );
-} 
+}

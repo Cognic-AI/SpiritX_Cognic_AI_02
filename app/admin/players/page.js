@@ -402,7 +402,6 @@ export default function PlayersPage() {
               <th className="py-2 px-4 text-left">University</th>
               <th className="py-2 px-4 text-left">Category</th>
               <th className="py-2 px-4 text-left">Value</th>
-              <th className="py-2 px-4 text-left">Points</th>
               <th className="py-2 px-4 text-left">Actions</th>
             </tr>
           </thead>
@@ -414,7 +413,6 @@ export default function PlayersPage() {
                 <td className="py-2 px-4">{player.university}</td>
                 <td className="py-2 px-4">{player.category}</td>
                 <td className="py-2 px-4">Rs. {player.player_value?.toLocaleString()}</td>
-                <td className="py-2 px-4">{player.player_points}</td>
                 <td className="py-2 px-4 flex space-x-2">
                   <Link 
                     href={`/admin/player-stats/${player.player_id}`}
