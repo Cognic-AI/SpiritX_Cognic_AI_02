@@ -23,12 +23,12 @@ CREATE TABLE users (
 );
 
 -- Create admin user
-INSERT INTO users (username, password, display_name, role_id, budget) 
-VALUES ('admin', 'Admin@2025', 'Administrator', 1, 9000000.00);
+-- INSERT INTO users (username, password, display_name, budget, role_id) 
+-- VALUES ('admin', 'Admin@2025', 'Administrator', 9000000.00, 1);
 
--- Create regular user
-INSERT INTO users (username, password, display_name, role_id, budget) 
-VALUES ('spiritx_2025', 'SpiritX@2025', 'SpiritX', 2, 9000000.00);
+-- -- Create regular user
+-- INSERT INTO users (username, password, display_name, budget, role_id) 
+-- VALUES ('spiritx_2025', 'SpiritX@2025', 'SpiritX', 9000000.00, 2);
 
 -- Players table with proper handling of undefined values
 CREATE TABLE players (
