@@ -20,15 +20,14 @@ export async function GET() {
         player_value,
         batting_strike_rate,
         batting_average,
-        bowling_economy,
-        bowling_average,
+        economy_rate,
         last_updated
       FROM 
         players
       ORDER BY 
         player_id ASC
     `);
-    
+
     return NextResponse.json(players);
   } catch (error) {
     console.error('Database error:', error);
