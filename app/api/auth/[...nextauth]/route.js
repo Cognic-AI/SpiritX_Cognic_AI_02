@@ -30,10 +30,8 @@ const handler = NextAuth({
 
           const user = users[0];
 
-          // For simplicity, we're not using bcrypt to verify passwords in this project
-          // In a real application, you should use bcrypt.compare to verify the password
-          // const passwordMatch = await bcrypt.compare(credentials.password, user.password);
-          const passwordMatch = credentials.password === user.password;
+          // Use bcrypt to verify the password
+          const passwordMatch = await bcrypt.compare(credentials.password, user.password);
 
           if (!passwordMatch) {
             return null;
@@ -44,6 +42,7 @@ const handler = NextAuth({
             email: user.username,
             name: user.display_name,
             role: user.role_name,
+            sub: user.budget,
             budget: user.budget,
           };
         } catch (error) {
@@ -64,6 +63,7 @@ const handler = NextAuth({
         token.role = user.role;
         token.budget = user.budget;
         token.email = user.email;
+        token.sub = user.sub;
         token.name = user.name;
       }
       return token;
@@ -76,6 +76,7 @@ const handler = NextAuth({
         session.user.role = token.role;
         session.user.budget = token.budget;
         session.user.email = token.email;
+        session.user.sub = token.sub;
         session.user.name = token.name;
       }
       return session;

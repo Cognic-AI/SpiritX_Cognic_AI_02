@@ -21,7 +21,7 @@ export default function AdminDashboardPage() {
           const data = await res.json();
           // Set basic stats from the summary
           setStats({
-            playerCount: data.top_batsmen?.length || 0,
+            playerCount: data.total_players || 0,
             totalRuns: data.total_runs || 0,
             totalWickets: data.total_wickets || 0
           });

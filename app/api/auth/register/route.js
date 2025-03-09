@@ -27,10 +27,8 @@ export async function POST(request) {
       );
     }
     
-    // For simplicity, we're not hashing the password in this demo
-    // In a real application, you would use bcrypt.hash to hash the password
-    // const hashedPassword = await bcrypt.hash(password, 10);
-    const hashedPassword = password;
+    // Hash the password using bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10);
     
     // Get the user role ID (2 for regular users)
     const roleId = 2; // Regular user role ID
@@ -49,4 +47,4 @@ export async function POST(request) {
       { status: 500 }
     );
   }
-} 
+}

@@ -5,7 +5,7 @@ import { executeQuery } from '@/lib/db';
 export async function GET(request, { params }) {
   try {
     const playerId = params.id;
-    
+
     // Execute query to get player data without showing points
     const players = await executeQuery(`
       SELECT 
@@ -21,20 +21,20 @@ export async function GET(request, { params }) {
         runs_conceded,
         player_value,
         batting_strike_rate,
+        bowling_strike_rate,
         batting_average,
-        bowling_economy,
-        bowling_average,
+        economy_rate,
         last_updated
       FROM 
         players
       WHERE
         player_id = ?
     `, [playerId]);
-    
+
     if (players.length === 0) {
       return NextResponse.json({ error: 'Player not found' }, { status: 404 });
     }
-    
+
     return NextResponse.json(players[0]);
   } catch (error) {
     console.error('Database error:', error);

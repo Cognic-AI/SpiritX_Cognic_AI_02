@@ -26,7 +26,7 @@ export default function PlayerDetailPage({ params }) {
 
     // Setup WebSocket connection for real-time updates
     const socket = new WebSocket(`${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/api/websocket`);
-    
+
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === 'player_update') {
@@ -123,16 +123,16 @@ export default function PlayerDetailPage({ params }) {
                 <div className="bg-gray-50 p-4 rounded-md">
                   <p className="text-sm text-gray-500">Strike Rate</p>
                   <p className="text-2xl font-bold">
-                    {typeof player.batting_strike_rate === 'number' 
-                      ? player.batting_strike_rate.toFixed(2) 
+                    {typeof player.batting_strike_rate === 'number'
+                      ? player.batting_strike_rate.toFixed(2)
                       : player.batting_strike_rate}
                   </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-md">
                   <p className="text-sm text-gray-500">Average</p>
                   <p className="text-2xl font-bold">
-                    {typeof player.batting_average === 'number' 
-                      ? player.batting_average.toFixed(2) 
+                    {typeof player.batting_average === 'number'
+                      ? player.batting_average.toFixed(2)
                       : player.batting_average}
                   </p>
                 </div>
@@ -166,19 +166,19 @@ export default function PlayerDetailPage({ params }) {
                   <p className="text-2xl font-bold">{player.runs_conceded}</p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-md">
-                  <p className="text-sm text-gray-500">Economy</p>
+                  <p className="text-sm text-gray-500">Economy Rate</p>
                   <p className="text-2xl font-bold">
-                    {typeof player.bowling_economy === 'number' 
-                      ? player.bowling_economy.toFixed(2) 
-                      : player.bowling_economy}
+                    {typeof player.economy_rate === 'number'
+                      ? player.economy_rate.toFixed(2)
+                      : player.economy_rate || 0}
                   </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-md">
                   <p className="text-sm text-gray-500">Bowling Average</p>
                   <p className="text-2xl font-bold">
-                    {typeof player.bowling_average === 'number' 
-                      ? player.bowling_average.toFixed(2) 
-                      : player.bowling_average}
+                    {typeof player.bowling_strike_rate === 'number'
+                      ? player.bowling_strike_rate.toFixed(2)
+                      : player.bowling_strike_rate}
                   </p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-md">
@@ -194,8 +194,8 @@ export default function PlayerDetailPage({ params }) {
           )}
 
           <div className="flex space-x-4">
-            <Link 
-              href={`/admin/players`} 
+            <Link
+              href={`/admin/players`}
               className="px-4 py-2 bg-blue-500 text-white rounded-md"
             >
               Edit Player
