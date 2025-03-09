@@ -83,6 +83,7 @@ export default function Footer() {
         </div>
         
         <div className="border-t border-gray-800 mt-12 pt-8">
+          <p className="text-gray-400 text-center">Made with ❤️ by Cognic.AI</p>
           <p className="text-gray-400 text-center">
             &copy; {new Date().getFullYear()} Spirit11 Fantasy Cricket. All rights reserved.
           </p>

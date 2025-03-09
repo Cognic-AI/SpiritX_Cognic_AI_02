@@ -28,8 +28,13 @@ function Header() {
       id:4,
       name:'My Team',
       path:'/myteam'
-  },
-]
+    },
+    {
+      id:5,
+      name:'Spiriter AI',
+      path:'/spiriter'
+    }
+  ]
 
  
   return (
@@ -48,8 +53,6 @@ function Header() {
               ))}
             </ul>
         </div>
-   
-        <Button>Get Started</Button>
         
     </div>
   )

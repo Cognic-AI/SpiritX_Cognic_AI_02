@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 export default function UserLayout({ children }) {
   const { data: session, status } = useSession();
   const pathname = usePathname();
+  const router = useRouter();
   const [teamStatus, setTeamStatus] = useState({ count: 0, total: 11 });
   const [budget, setBudget] = useState(9000000);
 
@@ -61,6 +62,12 @@ export default function UserLayout({ children }) {
 
   }, [status, session]);
 
+  useEffect(() => {
+    if (status === 'unauthenticated' && pathname === '/myteam') {
+      router.push('/login?callbackUrl=/myteam');
+    }
+  }, [status, pathname, router]);
+
   const handleSignOut = async () => {
     await signOut({ redirect: true, callbackUrl: '/' });
   };
@@ -103,18 +110,20 @@ export default function UserLayout({ children }) {
             <ul className="flex overflow-x-auto">
               <li>
                 <Link
-                  href="/players"
-                  className={`block px-6 py-4 ${isActive('/players') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                    }`}
+                  href="/home"
+                  className={`block px-6 py-4 ${
+                    isActive('/home') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                  }`}
                 >
-                  Players
+                  Home
                 </Link>
               </li>
               <li>
                 <Link
                   href="/select-team"
-                  className={`block px-6 py-4 ${isActive('/select-team') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                    }`}
+                  className={`block px-6 py-4 ${
+                    isActive('/select-team') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                  }`}
                 >
                   Select Your Team
                 </Link>
@@ -122,8 +131,9 @@ export default function UserLayout({ children }) {
               <li>
                 <Link
                   href="/team"
-                  className={`block px-6 py-4 ${isActive('/team') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                    }`}
+                  className={`block px-6 py-4 ${
+                    isActive('/team') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                  }`}
                 >
                   My Team <span className="text-sm text-blue-600">({teamStatus.count}/{teamStatus.total})</span>
                 </Link>
@@ -131,8 +141,9 @@ export default function UserLayout({ children }) {
               <li>
                 <Link
                   href="/budget"
-                  className={`block px-6 py-4 ${isActive('/budget') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                    }`}
+                  className={`block px-6 py-4 ${
+                    isActive('/budget') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                  }`}
                 >
                   Budget <span className="text-sm text-green-600">Rs. {budget || '9,000,000'}</span>
                 </Link>
@@ -140,10 +151,26 @@ export default function UserLayout({ children }) {
               <li>
                 <Link
                   href="/leaderboard"
-                  className={`block px-6 py-4 ${isActive('/leaderboard') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                    }`}
+                  className={`block px-6 py-4 ${
+                    isActive('/leaderboard') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                  }`}
                 >
                   Leaderboard
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/spiriter"
+                  className={`block px-6 py-4 ${
+                    isActive('/spiriter') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                  }`}
+                >
+                  <span className="flex items-center">
+                    Spiriter
+                    <span className="ml-1 inline-flex items-center justify-center w-4 h-4 bg-blue-500 text-white text-xs rounded-full">
+                      AI
+                    </span>
+                  </span>
                 </Link>
               </li>
             </ul>
@@ -156,8 +183,9 @@ export default function UserLayout({ children }) {
       </main>
 
       <footer className="bg-gray-800 text-white p-4 mt-auto">
+      <p className="text-gray-400 text-center">Made ❤️ with Cognic.AI</p>
         <div className="container mx-auto text-center">
-          <p>&copy; 2025 Spirit11 Fantasy Cricket Game</p>
+          <p>&copy; {new Date().getFullYear()} Spirit11 Fantasy Cricket Game</p>
         </div>
       </footer>
     </div>
