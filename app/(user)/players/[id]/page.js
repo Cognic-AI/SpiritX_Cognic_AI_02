@@ -122,7 +122,7 @@ export default function PlayerDetailPage({ params }) {
                                     <p className="text-2xl font-bold">{player.balls_faced}</p>
                                 </div>
                                 <div className="bg-gray-50 p-4 rounded-md">
-                                    <p className="text-sm text-gray-500">Strike Rate</p>
+                                    <p className="text-sm text-gray-500">Batting Strike Rate</p>
                                     <p className="text-2xl font-bold">
                                         {typeof player.batting_strike_rate === 'number'
                                             ? player.batting_strike_rate.toFixed(2)
@@ -167,19 +167,19 @@ export default function PlayerDetailPage({ params }) {
                                     <p className="text-2xl font-bold">{player.runs_conceded}</p>
                                 </div>
                                 <div className="bg-gray-50 p-4 rounded-md">
-                                    <p className="text-sm text-gray-500">Economy</p>
+                                    <p className="text-sm text-gray-500">Economy Rate</p>
                                     <p className="text-2xl font-bold">
-                                        {typeof player.bowling_economy === 'number'
-                                            ? player.bowling_economy.toFixed(2)
-                                            : player.bowling_economy}
+                                        {typeof player.economy_rate === 'number'
+                                            ? player.economy_rate.toFixed(2)
+                                            : player.economy_rate || 0}
                                     </p>
                                 </div>
                                 <div className="bg-gray-50 p-4 rounded-md">
-                                    <p className="text-sm text-gray-500">Bowling Average</p>
+                                    <p className="text-sm text-gray-500">Bowling Strike Rate</p>
                                     <p className="text-2xl font-bold">
-                                        {typeof player.bowling_average === 'number'
-                                            ? player.bowling_average.toFixed(2)
-                                            : player.bowling_average}
+                                        {typeof player.bowling_strike_rate === 'number'
+                                            ? player.bowling_strike_rate.toFixed(2)
+                                            : player.bowling_strike_rate || 0}
                                     </p>
                                 </div>
                                 <div className="bg-gray-50 p-4 rounded-md">
