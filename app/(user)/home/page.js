@@ -11,14 +11,14 @@ export default function UserHomePage() {
   const [topPlayers, setTopPlayers] = useState([]);
   const [teamInfo, setTeamInfo] = useState({ playerCount: 0, totalValue: 0 });
   const [loading, setLoading] = useState(true);
-  
+
   // Redirect if not authenticated
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/login?callbackUrl=/home');
     }
   }, [status, router]);
-  
+
   // Fetch top players and team info when authenticated
   useEffect(() => {
     if (status === 'authenticated') {
@@ -30,30 +30,31 @@ export default function UserHomePage() {
             const playersData = await playersRes.json();
             setTopPlayers(playersData);
           }
-          
-          // Fetch user team info (in a real app)
-          // const teamRes = await fetch('/api/users/team');
-          // if (teamRes.ok) {
-          //   const teamData = await teamRes.json();
-          //   setTeamInfo({
-          //     playerCount: teamData.players.length,
-          //     totalValue: teamData.totalValue
-          //   });
-          // }
-          
+
+          const teamRes = await fetch('/api/users/team');
+          if (teamRes.ok) {
+            const teamData = await teamRes.json();
+            setTeamInfo({
+              playerCount: teamData.players.length,
+              totalValue: teamData.teamInfo.total_value,
+            });
+
+          }
+
+
           // Mock data for now
-          setTeamInfo({ playerCount: 0, totalValue: 0 });
+          // setTeamInfo({ playerCount: 0, totalValue: 0 });
         } catch (error) {
           console.error('Error fetching data:', error);
         } finally {
           setLoading(false);
         }
       };
-      
+
       fetchData();
     }
-  }, [status]);
-  
+  }, [status, session]);
+
   if (status === 'loading' || status === 'unauthenticated') {
     return (
       <div className="flex justify-center items-center h-96">
@@ -61,11 +62,11 @@ export default function UserHomePage() {
       </div>
     );
   }
-  
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-bold mb-4">Your Team Status</h2>
@@ -78,8 +79,8 @@ export default function UserHomePage() {
             href="/select-team"
             className="block w-full text-center py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
-            {teamInfo.playerCount === 0 ? 'Start Building Your Team' : 
-             teamInfo.playerCount < 11 ? 'Complete Your Team' : 'Manage Your Team'}
+            {teamInfo.playerCount === 0 ? 'Start Building Your Team' :
+              teamInfo.playerCount < 11 ? 'Complete Your Team' : 'Manage Your Team'}
           </Link>
         </div>
 
@@ -91,8 +92,8 @@ export default function UserHomePage() {
               Rs. {session.user.budget?.toLocaleString() || '9,000,000'}
             </p>
             <p className="text-sm text-gray-600">
-              {teamInfo.totalValue > 0 ? 
-                `Spent: Rs. ${teamInfo.totalValue.toLocaleString()}` : 
+              {teamInfo.totalValue > 0 ?
+                `Spent: Rs. ${teamInfo.totalValue}` :
                 "You haven't spent any budget yet"}
             </p>
           </div>
@@ -104,7 +105,7 @@ export default function UserHomePage() {
           </Link>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="bg-white p-6 rounded-lg shadow-md lg:col-span-2">
           <h2 className="text-xl font-bold mb-4">Top Players</h2>
@@ -153,7 +154,7 @@ export default function UserHomePage() {
             </Link>
           </div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
           <div className="space-y-3">
@@ -184,7 +185,7 @@ export default function UserHomePage() {
           </div>
         </div>
       </div>
-      
+
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-bold mb-4">Getting Started</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
