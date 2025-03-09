@@ -88,8 +88,6 @@ export default function SelectPlayersByCategoryPage({ params }) {
       };
 
       fetchPlayers();
-    } else {
-      alert('Not authenticated');
     }
   }, [status, displayCategory, session]);
 

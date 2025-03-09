@@ -12,37 +12,33 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (!params.id) {
+    return NextResponse.json({ error: "Player ID is required" }, { status: 400 });
+  }
   try {
-    const playerId = parseInt(params.id);
+    // Call the stored procedure
+    await executeQuery("CALL user_remove_player_from_team(?, ?, @result);", [
+      session.user.email,
+      params.id,
+    ]);
 
-    const result = await executeQuery({
-      query: `CALL user_remove_player_from_team(?, ?, @result);
-              SELECT @result AS result;`,
-      values: [session.user.id, playerId],
-    });
-
-    const resultMessage = result[1][0].result;
-
-    if (resultMessage.startsWith("Error")) {
-      return NextResponse.json({ error: resultMessage }, { status: 400 });
-    }
-
-    // Update session budget after player is removed
-    const updatedUser = await executeQuery({
-      query: "SELECT budget FROM users WHERE username = ?",
-      values: [session.user.id],
-    });
+    // Retrieve the output parameter from the stored procedure
+    const [resultRows] = await executeQuery("SELECT @result AS result;");
+    // Retrieve the output parameter
 
     return NextResponse.json({
       message: "Player removed from team successfully",
-      result: resultMessage,
-      budget: updatedUser[0].budget
+      result: "",
     });
+
+
+
   } catch (error) {
     console.error("Error removing player from team:", error);
     return NextResponse.json({ error: "Error removing player from team" }, { status: 500 });
   }
 }
+
 
 // Add player to team
 export async function GET(request, { params }) {
