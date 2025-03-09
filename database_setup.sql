@@ -53,9 +53,9 @@ CREATE TABLE players (
         CASE WHEN innings_played > 0 THEN total_runs / innings_played ELSE NULL END
     ) STORED,
     
-    bowling_balls INT GENERATED ALWAYS AS (
-        CAST(overs_bowled * 6 AS UNSIGNED)
-    ) STORED,
+    -- bowling_balls INT GENERATED ALWAYS AS (
+    --     CAST(overs_bowled * 6 AS UNSIGNED)
+    -- ) STORED,
     
     -- Handling undefined values in bowling strike rate when wickets = 0
     bowling_strike_rate DECIMAL(10, 2) GENERATED ALWAYS AS (
