@@ -1,6 +1,6 @@
 // src/app/api/users/team/route.js
 import { NextResponse } from "next/server";
-import { executeQuery, executeStoredProcedure } from "@/lib/db";
+import { executeStoredProcedure } from "@/lib/db";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
@@ -12,12 +12,12 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  console.log(session.user.id);
+  console.log(session.user.email);
 
   try {
-    const results = await executeStoredProcedure('get_user_team_details', ['spiritx_2025']);
+    const results = await executeStoredProcedure('get_user_team_details', [session.user.email]);
 
-    console.log(results);
+    // console.log(results);
 
     // MySQL stored procedure returns multiple result sets
     // First result set: team info, Second result set: team players
