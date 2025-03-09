@@ -60,12 +60,25 @@ SET @team_exists = (SELECT COUNT(*) FROM teams WHERE username = 'spiritx_2025');
 
 -- If team doesn't exist, create it
 SET @team_id = NULL;
-IF @team_exists = 0 THEN
-    INSERT INTO teams (username, team_name) VALUES ('spiritx_2025', 'SpiritX Team');
-    SET @team_id = LAST_INSERT_ID();
-ELSE
-    SET @team_id = (SELECT team_id FROM teams WHERE username = 'spiritx_2025');
-END IF;
+-- IF @team_exists = 0 THEN
+--     INSERT INTO teams (username, team_name) VALUES ('spiritx_2025', 'SpiritX Team');
+--     SET @team_id = LAST_INSERT_ID();
+-- ELSE
+--     SET @team_id = (SELECT team_id FROM teams WHERE username = 'spiritx_2025');
+-- END IF;
+
+-- First, ensure the database is selected
+USE spirit11;
+
+-- Check if the team exists and insert if not
+INSERT INTO teams (username, team_name)
+SELECT 'spiritx_2025', 'SpiritX Team'
+WHERE NOT EXISTS (
+    SELECT 1 FROM teams WHERE username = 'spiritx_2025'
+);
+
+-- Retrieve the team_id
+SET @team_id = (SELECT team_id FROM teams WHERE username = 'spiritx_2025');
 
 -- Then add the players to the team
 INSERT INTO team_players (team_id, player_id)
