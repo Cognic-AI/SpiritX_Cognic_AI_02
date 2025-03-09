@@ -37,9 +37,9 @@ export default function AdminDashboardPage() {
   }, []);
 
   return (
-    <div className="container mx-auto">
+    <div className="max-w-screen-xl mx-auto w-full p-6 overflow-hidden">
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
-      
+
       <div className="mb-8">
         <div className="bg-white p-4 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-2">Welcome, {session?.user?.name || 'Admin'}</h2>
@@ -48,7 +48,7 @@ export default function AdminDashboardPage() {
           </p>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-blue-50 p-6 rounded-md shadow-md">
           <h3 className="text-lg font-semibold mb-2">Players</h3>
@@ -56,35 +56,35 @@ export default function AdminDashboardPage() {
             {loading ? '...' : stats.playerCount}
           </p>
           <p className="text-sm text-gray-600 mb-4">Total registered players</p>
-          <Link 
+          <Link
             href="/admin/players"
             className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
           >
             Manage Players
           </Link>
         </div>
-        
+
         <div className="bg-green-50 p-6 rounded-md shadow-md">
           <h3 className="text-lg font-semibold mb-2">Total Runs</h3>
           <p className="text-3xl font-bold text-green-600 mb-2">
             {loading ? '...' : stats.totalRuns.toLocaleString()}
           </p>
           <p className="text-sm text-gray-600 mb-4">Runs scored in tournament</p>
-          <Link 
+          <Link
             href="/admin/tournament-summary"
             className="inline-block px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
           >
             View Tournament Summary
           </Link>
         </div>
-        
+
         <div className="bg-purple-50 p-6 rounded-md shadow-md">
           <h3 className="text-lg font-semibold mb-2">Total Wickets</h3>
           <p className="text-3xl font-bold text-purple-600 mb-2">
             {loading ? '...' : stats.totalWickets.toLocaleString()}
           </p>
           <p className="text-sm text-gray-600 mb-4">Wickets taken in tournament</p>
-          <Link 
+          <Link
             href="/admin/player-stats"
             className="inline-block px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
           >
@@ -92,12 +92,12 @@ export default function AdminDashboardPage() {
           </Link>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-md shadow-md">
           <h3 className="text-xl font-semibold mb-4">Quick Actions</h3>
           <div className="grid grid-cols-1 gap-4">
-            <Link 
+            <Link
               href="/admin/players"
               className="block p-4 bg-gray-100 hover:bg-gray-200 rounded-md"
             >
@@ -106,8 +106,8 @@ export default function AdminDashboardPage() {
                 <span>→</span>
               </div>
             </Link>
-            
-            <Link 
+
+            <Link
               href="/admin/player-stats"
               className="block p-4 bg-gray-100 hover:bg-gray-200 rounded-md"
             >
@@ -116,8 +116,8 @@ export default function AdminDashboardPage() {
                 <span>→</span>
               </div>
             </Link>
-            
-            <Link 
+
+            <Link
               href="/admin/tournament-summary"
               className="block p-4 bg-gray-100 hover:bg-gray-200 rounded-md"
             >
@@ -128,7 +128,7 @@ export default function AdminDashboardPage() {
             </Link>
           </div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-md shadow-md">
           <h3 className="text-xl font-semibold mb-4">System Status</h3>
           {loading ? (
@@ -146,7 +146,7 @@ export default function AdminDashboardPage() {
                   <div className="bg-green-600 h-2 rounded-full" style={{ width: '100%' }}></div>
                 </div>
               </div>
-              
+
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-gray-600">API Status</span>
@@ -158,7 +158,7 @@ export default function AdminDashboardPage() {
                   <div className="bg-green-600 h-2 rounded-full" style={{ width: '100%' }}></div>
                 </div>
               </div>
-              
+
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-gray-600">WebSocket Status</span>
