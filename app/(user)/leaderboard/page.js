@@ -14,22 +14,57 @@ export default function LeaderboardPage() {
     if (status === 'authenticated') {
       // Here we would fetch the leaderboard data
       // For now, just mock the data
-      const mockLeaderboard = [
-        { username: 'player1', display_name: 'Cricket Master', points: 1250, team_value: 8500000 },
-        { username: 'player2', display_name: 'Fantasy King', points: 1100, team_value: 8900000 },
-        { username: 'player3', display_name: 'Cricket Guru', points: 950, team_value: 8700000 },
-        { username: 'player4', display_name: 'Fantasy Pro', points: 900, team_value: 8200000 },
-        { username: 'player5', display_name: 'Cricket Wizard', points: 850, team_value: 8600000 },
-      ];
-      
-      setLeaderboard(mockLeaderboard);
-      
-      // Find current user's rank
-      const userIndex = mockLeaderboard.findIndex(user => user.username === session.user.name);
-      if (userIndex !== -1) {
-        setCurrentUserRank(userIndex + 1);
-      }
-      
+      const fetchTeam = async () => {
+        try {
+          const res = await fetch('/api/leaderboard', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          console.log(res);
+
+          if (!res.ok) throw new Error('Failed to fetch leaderboard');
+
+          const data = (await res.json()).leaderboard;
+
+          const l = [];
+
+          for (let i = 0; i < data.length; i++) {
+            l.push({
+              username: data[i].username,
+              display_name: data[i].team_name,
+              points: data[i].total_points,
+              team_value: data[i].total_value
+            });
+          }
+          // Extract and set team information
+          setLeaderboard(l);
+          const userIndex = l.findIndex(user => user.username === session.user.email);
+          if (userIndex !== -1) {
+            setCurrentUserRank(userIndex + 1);
+          }
+
+          console.log(l);
+          console.log(userIndex + 1);
+        }
+        catch (error) {
+          console.error('Error fetching players:', error);
+          setLoading(false);
+        }
+      };
+      fetchTeam();
+      // const mockLeaderboard = [
+      //   { username: 'player1', display_name: 'Cricket Master', points: 1250, team_value: 8500000 },
+      //   { username: 'player2', display_name: 'Fantasy King', points: 1100, team_value: 8900000 },
+      //   { username: 'player3', display_name: 'Cricket Guru', points: 950, team_value: 8700000 },
+      //   { username: 'player4', display_name: 'Fantasy Pro', points: 900, team_value: 8200000 },
+      //   { username: 'player5', display_name: 'Cricket Wizard', points: 850, team_value: 8600000 },
+      // ];
+
+      // setLeaderboard(mockLeaderboard);
+
       setLoading(false);
     }
   }, [status, session]);
@@ -48,10 +83,10 @@ export default function LeaderboardPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Leaderboard</h1>
-      
+
       <div className="bg-white p-6 rounded-md shadow-md mb-6">
         <h2 className="text-lg font-semibold mb-4">Your Ranking</h2>
-        
+
         {currentUserRank ? (
           <div className="bg-blue-50 p-4 rounded-md">
             <div className="flex justify-between items-center">
@@ -83,10 +118,10 @@ export default function LeaderboardPage() {
           </div>
         )}
       </div>
-      
+
       <div className="bg-white p-6 rounded-md shadow-md">
         <h2 className="text-lg font-semibold mb-4">Top Players</h2>
-        
+
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead className="bg-gray-50">
@@ -99,7 +134,7 @@ export default function LeaderboardPage() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {leaderboard.map((user, index) => (
-                <tr 
+                <tr
                   key={user.username}
                   className={user.username === session?.user?.name ? 'bg-blue-50' : ''}
                 >
@@ -120,14 +155,14 @@ export default function LeaderboardPage() {
                     {user.points}
                   </td>
                   <td className="px-4 py-2 text-right">
-                    Rs. {user.team_value.toLocaleString()}
+                    Rs. {user.team_value}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        
+
         {leaderboard.length === 0 && (
           <div className="text-center py-6">
             <p className="text-gray-600">No players on the leaderboard yet.</p>
