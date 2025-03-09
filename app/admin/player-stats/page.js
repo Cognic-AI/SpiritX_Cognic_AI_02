@@ -134,24 +134,22 @@ export default function PlayerStatsPage() {
                           : player.bowling_strike_rate || 0}
                       </p>
                     </div>
+
+
+                    <div>
+                      <p className="text-sm text-gray-500">Wickets</p>
+                      <p className="font-semibold">{player.wickets}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Economy Rate</p>
+                      <p className="font-semibold">
+                        {typeof player.economy_rate === 'number'
+                          ? player.economy_rate.toFixed(2)
+                          : player.economy_rate || 0}
+                      </p>
+                    </div>
                   </>
                 ) : null}
-
-                <>
-                  <div>
-                    <p className="text-sm text-gray-500">Wickets</p>
-                    <p className="font-semibold">{player.wickets}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Economy Rate</p>
-                    <p className="font-semibold">
-                      {typeof player.economy_rate === 'number'
-                        ? player.economy_rate.toFixed(2)
-                        : player.economy_rate || 0}
-                    </p>
-                  </div>
-                </>
-
               </div>
             </div>
           </Link>
