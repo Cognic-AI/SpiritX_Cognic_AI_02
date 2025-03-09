@@ -30,17 +30,17 @@ export default function PlayersPage() {
           if (!res.ok) throw new Error('Failed to fetch players');
           const data = await res.json();
           setPlayers(data);
-          
+
           // Get recommended players (top players from each category)
           const batsmen = data.filter(player => player.category === 'Batsman')
             .sort((a, b) => b.total_runs - a.total_runs).slice(0, 2);
-          
+
           const bowlers = data.filter(player => player.category === 'Bowler')
             .sort((a, b) => b.wickets - a.wickets).slice(0, 2);
-          
+
           const allRounders = data.filter(player => player.category === 'All-Rounder')
             .sort((a, b) => (b.total_runs + b.wickets * 20) - (a.total_runs + a.wickets * 20)).slice(0, 2);
-          
+
           setRecommendedPlayers([...batsmen, ...bowlers, ...allRounders]);
           setLoading(false);
         } catch (error) {
@@ -53,7 +53,7 @@ export default function PlayersPage() {
 
       // Setup WebSocket connection for real-time updates
       const socket = new WebSocket(`${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/api/websocket`);
-      
+
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.type === 'player_update') {
@@ -89,7 +89,7 @@ export default function PlayersPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Players</h1>
-      
+
       <div className="bg-white p-4 rounded-md shadow-md mb-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1">
@@ -124,8 +124,8 @@ export default function PlayersPage() {
           <h2 className="text-xl font-semibold mb-4">Recommended Players</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
             {recommendedPlayers.map(player => (
-              <Link 
-                key={player.player_id} 
+              <Link
+                key={player.player_id}
                 href={`/players/${player.player_id}`}
                 className="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-shadow border-2 border-blue-200"
               >
@@ -134,7 +134,7 @@ export default function PlayersPage() {
                     <h2 className="text-xl font-semibold">{player.name}</h2>
                     <span className="px-2 py-1 bg-blue-100 text-xs rounded-full">{player.category}</span>
                   </div>
-                  
+
                   <p className="text-gray-600 mb-4">{player.university}</p>
 
                   <div className="mb-2">
@@ -151,7 +151,7 @@ export default function PlayersPage() {
                         <div>
                           <p className="text-xs text-gray-500">Strike Rate</p>
                           <p className="font-semibold">
-                            {typeof player.batting_strike_rate === 'number' 
+                            {typeof player.batting_strike_rate === 'number'
                               ? player.batting_strike_rate.toFixed(2)
                               : player.batting_strike_rate}
                           </p>
@@ -170,9 +170,9 @@ export default function PlayersPage() {
                         <div>
                           <p className="text-xs text-gray-500">Economy</p>
                           <p className="font-semibold">
-                            {typeof player.bowling_economy === 'number' 
-                              ? player.bowling_economy.toFixed(2)
-                              : player.bowling_economy}
+                            {typeof player.economy_rate === 'number'
+                              ? player.economy_rate.toFixed(2)
+                              : player.economy_rate || 'N/A'}
                           </p>
                         </div>
                       </div>
@@ -191,8 +191,8 @@ export default function PlayersPage() {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredPlayers.map(player => (
-          <Link 
-            key={player.player_id} 
+          <Link
+            key={player.player_id}
             href={`/players/${player.player_id}`}
             className="bg-white rounded-md shadow-md overflow-hidden hover:shadow-lg transition-shadow"
           >
@@ -201,7 +201,7 @@ export default function PlayersPage() {
                 <h2 className="text-xl font-semibold">{player.name}</h2>
                 <span className="px-2 py-1 bg-gray-100 text-xs rounded-full">{player.category}</span>
               </div>
-              
+
               <p className="text-gray-600 mb-4">{player.university}</p>
 
               {player.category === 'Batsman' || player.category === 'All-Rounder' ? (
@@ -213,9 +213,9 @@ export default function PlayersPage() {
                       <p className="font-semibold">{player.total_runs}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Strike Rate</p>
+                      <p className="text-xs text-gray-500">Batting Strike Rate</p>
                       <p className="font-semibold">
-                        {typeof player.batting_strike_rate === 'number' 
+                        {typeof player.batting_strike_rate === 'number'
                           ? player.batting_strike_rate.toFixed(2)
                           : player.batting_strike_rate}
                       </p>
@@ -233,11 +233,11 @@ export default function PlayersPage() {
                       <p className="font-semibold">{player.wickets}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Economy</p>
+                      <p className="text-xs text-gray-500">Economy Rate</p>
                       <p className="font-semibold">
-                        {typeof player.bowling_economy === 'number' 
-                          ? player.bowling_economy.toFixed(2)
-                          : player.bowling_economy}
+                        {typeof player.economy_rate === 'number'
+                          ? player.economy_rate.toFixed(2)
+                          : player.economy_rate || 'N/A'}
                       </p>
                     </div>
                   </div>
@@ -251,7 +251,7 @@ export default function PlayersPage() {
       {filteredPlayers.length === 0 && (
         <div className="text-center py-10">
           <p className="text-gray-600">No players found matching your criteria.</p>
-          <button 
+          <button
             onClick={() => {
               setSearchTerm('');
               setCategoryFilter('');
