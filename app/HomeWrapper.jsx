@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -62,12 +62,12 @@ export default function HomeWrapper({ children }) {
             <h1 className="text-2xl font-bold">Spirit11</h1>
             <div className="flex items-center space-x-4">
               <span>Welcome, {session.user.name}</span>
-              <Link
-                href="/api/auth/signout"
+              <button
+                onClick={() => signOut({ callbackUrl: '/' })}
                 className="px-4 py-2 bg-blue-700 rounded-md hover:bg-blue-800"
               >
                 Sign Out
-              </Link>
+              </button>
             </div>
           </div>
         </header>

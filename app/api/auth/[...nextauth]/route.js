@@ -55,6 +55,7 @@ const handler = NextAuth({
   ],
   pages: {
     signIn: '/login',
+    signOut: '/',
   },
   callbacks: {
     async jwt({ token, user }) {

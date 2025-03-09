@@ -4,10 +4,13 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
   
 
 function Header() {
+  const router = useRouter();
+  
   const Menu=[
     {
       id:1,
@@ -27,10 +30,18 @@ function Header() {
     {
       id:4,
       name:'My Team',
-      path:'/myteam'
-  },
-]
+      path:'/team'
+    },
+  ]
 
+  const handleNavigation = (path) => {
+    // For protected routes, redirect to login
+    if (path === '/team' || path === '/') {
+      router.push('/login');
+    } else {
+      router.push(path);
+    }
+  };
  
   return (
     <div className='flex items-center 
@@ -40,17 +51,18 @@ function Header() {
             />
             <ul className='md:flex gap-8 hidden'>
               {Menu.map((item,index)=>(
-                <Link href={item.path} key={index}>
-                  <li className='hover:text-primary
+                <li 
+                  key={index}
+                  onClick={() => handleNavigation(item.path)}
+                  className='hover:text-primary
                     cursor-pointer hover:scale-105
-                    transition-all ease-in-out'>{item.name}</li>
-                </Link>
+                    transition-all ease-in-out'
+                >
+                  {item.name}
+                </li>
               ))}
             </ul>
         </div>
-   
-        <Button>Get Started</Button>
-        
     </div>
   )
 }
