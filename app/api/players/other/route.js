@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server';
 import { executeQuery } from '@/lib/db';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-// GET /api/players - Get all players for user view (no points)
+// GET /api/players/[id] - Get a specific player's details for users (without points)
 export async function GET() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     // Execute query to get player data without showing points
     const players = await executeQuery(`
@@ -19,14 +26,15 @@ export async function GET() {
         runs_conceded,
         player_value,
         batting_strike_rate,
+        bowling_strike_rate,
         batting_average,
         economy_rate,
         last_updated
       FROM 
-        players
-      ORDER BY 
-        player_id ASC
-    `);
+        players 
+      WHERE
+        player_id NOT IN (SELECT player_id FROM team_players WHERE team_id IN (SELECT team_id FROM teams WHERE username = ?))
+    `, [session.user.email]);
 
     return NextResponse.json(players);
   } catch (error) {

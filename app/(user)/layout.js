@@ -9,6 +9,8 @@ export default function UserLayout({ children }) {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const [teamStatus, setTeamStatus] = useState({ count: 0, total: 11 });
+  const [budget, setBudget] = useState(9000000);
+
 
   // Load team status when session is available
   useEffect(() => {
@@ -40,6 +42,9 @@ export default function UserLayout({ children }) {
             totalPoints: 0,
             isComplete: false,
           };
+
+          setBudget(9000000 - teamData.total_value);
+
           // Extract and set team information
           setTeamStatus({
             count: teamData.player_count || 0,
@@ -129,7 +134,7 @@ export default function UserLayout({ children }) {
                   className={`block px-6 py-4 ${isActive('/budget') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
                     }`}
                 >
-                  Budget <span className="text-sm text-green-600">Rs. {session?.user?.budget?.toLocaleString() || '9,000,000'}</span>
+                  Budget <span className="text-sm text-green-600">Rs. {budget || '9,000,000'}</span>
                 </Link>
               </li>
               <li>

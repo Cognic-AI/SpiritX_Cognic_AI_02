@@ -16,14 +16,14 @@ export async function GET() {
   try {
     const results = await executeStoredProcedure('get_user_team_details', [session.user.email]);
 
-    // console.log(results);
-
-    // MySQL stored procedure returns multiple result sets
-    // First result set: team info, Second result set: team players
     const teamInfo = results[0][0] || { team_id: null, team_name: null, player_count: 0, is_complete: false, total_points: null, total_value: 0, budget: session.user.budget };
     const teamPlayers = results[1] || [];
 
-    return NextResponse.json({ teamInfo, players: teamPlayers });
+    console.log("Team Info:", teamInfo);
+    console.log("Team Players:", teamPlayers.length);
+
+
+    return NextResponse.json({ teamInfo: teamInfo, players: teamPlayers });
   } catch (error) {
     console.error("Error fetching team:", error);
     return NextResponse.json({ error: "Error fetching team" }, { status: 500 });
