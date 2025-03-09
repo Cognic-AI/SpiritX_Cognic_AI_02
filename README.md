@@ -28,8 +28,7 @@ npm install
 ```
 3. Set up the database:
 ```bash
-mysql -u root -p < database_setup.sql
-mysql -u root -p < database_data.sql
+mysql -u root -p < spirit11_db_dump.sql
 ```
 4. Create a `.env` file in the root directory with the following variables:
 ```bash
@@ -51,8 +50,12 @@ GEMINI_API_KEY=your_gemini_api_key
 ```bash
 npm run dev
 ```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+6. Start the chatbot endpoint (in a separate terminal):
+```bash
+cd python_backend
+python chatbot_endpoint.py
+```
+7. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Project Structure
 
