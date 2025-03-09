@@ -58,3 +58,4 @@ def initialize_gemini():
         generation_config=generation_config,
     )
     return model
+
