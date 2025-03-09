@@ -57,6 +57,13 @@ python chatbot_endpoint.py
 ```
 7. Open [http://localhost:3000](http://localhost:3000) in your browser
 
+## Admin Credentials
+```bash
+admin
+Admin@2025  
+```
+
+
 ## Project Structure
 
 - `/app` - Next.js 14 app directory structure
