@@ -16,7 +16,7 @@ export async function GET() {
   try {
     const results = await executeStoredProcedure('get_user_team_details', [session.user.email]);
 
-    const teamInfo = results[0][0] || { team_id: null, team_name: null, player_count: 0, is_complete: false, total_points: null, total_value: 0, budget: session.user.budget };
+    const teamInfo = results[0][0] || { team_id: null, team_name: null, player_count: 0, is_complete: false, total_points: null, total_value: 0, budget: 9000000 };
     const teamPlayers = results[1] || [];
 
     console.log("Team Info:", teamInfo);

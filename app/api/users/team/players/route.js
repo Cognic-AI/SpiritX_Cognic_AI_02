@@ -37,8 +37,6 @@ export async function GET(request, { params }) {
 
     console.log(updatedUser);
 
-    session.user.budget = updatedUser[0][0].budget;
-
     return NextResponse.json({
       message: "Player added to team successfully",
       result: resultMessage,

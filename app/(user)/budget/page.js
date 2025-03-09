@@ -15,6 +15,7 @@ export default function BudgetPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     setBudget({
       total: 9000000,
       used: 9000000 - session?.user?.budget,
@@ -36,6 +37,17 @@ export default function BudgetPage() {
           if (!res.ok) throw new Error('Failed to fetch players');
 
           const data = await res.json();
+
+          const teamInfo = data.teamInfo || {
+
+          };
+
+          setBudget({
+            total: 9000000,
+            used: teamInfo.total_value,
+            remaining: 9000000 - teamInfo.total_value,
+            players: []
+          });
 
           const players = data.players || [];
 

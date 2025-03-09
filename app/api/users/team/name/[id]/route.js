@@ -3,7 +3,7 @@ import { executeQuery } from "@/lib/db";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export async function PUT(request, { params }) {
+export async function GET(request, { params }) {
     const session = await getServerSession(authOptions);
 
     if (!session) {
@@ -16,13 +16,9 @@ export async function PUT(request, { params }) {
 
     try {
         const result = await executeQuery({
-            query: "UPDATE team SET team_name = ? WHERE username = ?",
+            query: "UPDATE teams SET team_name = ? WHERE username = ?",
             values: [params.id, session.user.email],
         });
-
-        if (result.affectedRows === 0) {
-            return NextResponse.json({ error: "No matching record found" }, { status: 404 });
-        }
 
         return NextResponse.json({ message: "Team name updated successfully" }, { status: 200 });
 

@@ -89,7 +89,7 @@ export default function UserHomePage() {
           <div className="bg-green-50 p-4 rounded-md text-center mb-4">
             <p className="text-lg">Available Budget</p>
             <p className="text-3xl font-bold text-green-600">
-              Rs. {session.user.budget?.toLocaleString() || '9,000,000'}
+              Rs. {9000000 - teamInfo.totalValue || '9,000,000'}
             </p>
             <p className="text-sm text-gray-600">
               {teamInfo.totalValue > 0 ?

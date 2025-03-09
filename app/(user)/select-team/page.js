@@ -31,7 +31,7 @@ export default function SelectTeamPage() {
 
     try {
       const res = await fetch(`/api/users/team/name/${teamName}`, {
-        method: "PUT",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
@@ -155,7 +155,7 @@ export default function SelectTeamPage() {
       <h1 className="text-2xl font-bold mb-6">Select Your Team</h1>
 
       {/* Editable Team Name Section */}
-      <div className="mb-4 flex items-center gap-2">
+      {/* <div className="mb-4 flex items-center gap-2">
         {isEditing ? (
           <input
             type="text"
@@ -182,7 +182,7 @@ export default function SelectTeamPage() {
             Edit
           </button>
         )}
-      </div>
+      </div> */}
 
       <div className="bg-white p-4 rounded-md shadow-md mb-6">
         <h2 className="text-lg font-semibold mb-2">Team Composition</h2>
