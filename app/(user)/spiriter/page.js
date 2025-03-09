@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import ReactMarkdown from 'react-markdown';
 
 export default function SpiriterPage() {
   const { data: session, status } = useSession();
@@ -41,8 +42,8 @@ export default function SpiriterPage() {
     setIsLoading(true);
     
     try {
-      // Call the Spiriter API
-      const response = await fetch('/api/spiriter', {
+      // Call the local FastAPI endpoint
+      const response = await fetch('http://localhost:8000/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +118,7 @@ export default function SpiriterPage() {
                         : 'bg-gray-100 text-gray-800 rounded-bl-none'
                     }`}
                   >
-                    {message.content}
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
                   </div>
                 </div>
               ))}
