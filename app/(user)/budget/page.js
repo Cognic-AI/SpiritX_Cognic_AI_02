@@ -15,15 +15,54 @@ export default function BudgetPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setBudget({
+      total: 9000000,
+      used: 9000000 - session?.user?.budget,
+      remaining: session?.user?.budget,
+      players: []
+    });
     if (status === 'authenticated') {
       // Here we would fetch the user's budget details
       // For now, just mock the data
-      setBudget({
-        total: 9000000,
-        used: 0,
-        remaining: 9000000,
-        players: []
-      });
+      const fetchTeam = async () => {
+        try {
+          const res = await fetch('/api/users/team', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!res.ok) throw new Error('Failed to fetch players');
+
+          const data = await res.json();
+
+          const players = data.players || [];
+
+          const p = [];
+
+          for (let i = 0; i < players.length; i++) {
+            const player = {
+              player_id: players[i].player_id,
+              name: players[i].name,
+              category: players[i].category,
+              value: players[i].player_value
+            };
+            p.push(player);
+          }
+
+          setBudget(prevBudget => ({
+            ...prevBudget,
+            players: p
+          }));
+          setLoading(false)
+        }
+        catch (error) {
+          console.error('Error fetching players:', error);
+          setLoading(false);
+        }
+      };
+      fetchTeam();
       setLoading(false);
     }
   }, [status]);
@@ -44,43 +83,43 @@ export default function BudgetPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-6">Budget</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div className="bg-white p-6 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-4">Budget Overview</h2>
-          
+
           <div className="mb-6">
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Total Budget</span>
-              <span className="font-medium">Rs. {budget.total.toLocaleString()}</span>
+              <span className="font-medium">Rs. {budget.total}</span>
             </div>
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Used Budget</span>
-              <span className="font-medium">Rs. {budget.used.toLocaleString()}</span>
+              <span className="font-medium">Rs. {budget.used}</span>
             </div>
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Remaining Budget</span>
-              <span className="font-medium text-green-600">Rs. {budget.remaining.toLocaleString()}</span>
+              <span className="font-medium text-green-600">Rs. {budget.remaining}</span>
             </div>
           </div>
-          
+
           <div className="mb-4">
             <div className="flex justify-between mb-2">
               <span className="text-gray-600">Budget Utilization</span>
               <span className="font-medium">{percentUsed.toFixed(1)}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
-              <div 
-                className="bg-green-600 h-2 rounded-full" 
+              <div
+                className="bg-green-600 h-2 rounded-full"
                 style={{ width: `${percentUsed}%` }}
               ></div>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
-          
+
           <div className="grid grid-cols-1 gap-4">
             <Link
               href="/select-team"
@@ -91,7 +130,7 @@ export default function BudgetPage() {
                 <span>→</span>
               </div>
             </Link>
-            
+
             <Link
               href="/team"
               className="block p-4 bg-green-50 hover:bg-green-100 rounded-md"
@@ -101,7 +140,7 @@ export default function BudgetPage() {
                 <span>→</span>
               </div>
             </Link>
-            
+
             <Link
               href="/leaderboard"
               className="block p-4 bg-purple-50 hover:bg-purple-100 rounded-md"
@@ -114,7 +153,7 @@ export default function BudgetPage() {
           </div>
         </div>
       </div>
-      
+
       {budget.players.length > 0 ? (
         <div className="bg-white p-6 rounded-md shadow-md">
           <h2 className="text-lg font-semibold mb-4">Budget Allocation</h2>

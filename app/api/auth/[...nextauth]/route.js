@@ -44,6 +44,7 @@ const handler = NextAuth({
             email: user.username,
             name: user.display_name,
             role: user.role_name,
+            sub: user.budget,
             budget: user.budget,
           };
         } catch (error) {
@@ -63,6 +64,7 @@ const handler = NextAuth({
         token.role = user.role;
         token.budget = user.budget;
         token.email = user.email;
+        token.sub = user.sub;
         token.name = user.name;
       }
       return token;
@@ -75,6 +77,7 @@ const handler = NextAuth({
         session.user.role = token.role;
         session.user.budget = token.budget;
         session.user.email = token.email;
+        session.user.sub = token.sub;
         session.user.name = token.name;
       }
       return session;
