@@ -9,12 +9,13 @@ export default function UserLayout({ children }) {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const [teamStatus, setTeamStatus] = useState({ count: 0, total: 11 });
-  
+
   // Load team status when session is available
   useEffect(() => {
     if (status === 'authenticated') {
       // Here we would fetch the user's team status
       // For now, just mock the data
+
       setTeamStatus({ count: 0, total: 11 });
     }
   }, [status]);
@@ -62,9 +63,8 @@ export default function UserLayout({ children }) {
               <li>
                 <Link
                   href="/players"
-                  className={`block px-6 py-4 ${
-                    isActive('/players') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                  }`}
+                  className={`block px-6 py-4 ${isActive('/players') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                    }`}
                 >
                   Players
                 </Link>
@@ -72,9 +72,8 @@ export default function UserLayout({ children }) {
               <li>
                 <Link
                   href="/select-team"
-                  className={`block px-6 py-4 ${
-                    isActive('/select-team') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                  }`}
+                  className={`block px-6 py-4 ${isActive('/select-team') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                    }`}
                 >
                   Select Your Team
                 </Link>
@@ -82,9 +81,8 @@ export default function UserLayout({ children }) {
               <li>
                 <Link
                   href="/team"
-                  className={`block px-6 py-4 ${
-                    isActive('/team') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                  }`}
+                  className={`block px-6 py-4 ${isActive('/team') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                    }`}
                 >
                   My Team <span className="text-sm text-blue-600">({teamStatus.count}/{teamStatus.total})</span>
                 </Link>
@@ -92,9 +90,8 @@ export default function UserLayout({ children }) {
               <li>
                 <Link
                   href="/budget"
-                  className={`block px-6 py-4 ${
-                    isActive('/budget') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                  }`}
+                  className={`block px-6 py-4 ${isActive('/budget') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                    }`}
                 >
                   Budget <span className="text-sm text-green-600">Rs. {session?.user?.budget?.toLocaleString() || '9,000,000'}</span>
                 </Link>
@@ -102,9 +99,8 @@ export default function UserLayout({ children }) {
               <li>
                 <Link
                   href="/leaderboard"
-                  className={`block px-6 py-4 ${
-                    isActive('/leaderboard') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
-                  }`}
+                  className={`block px-6 py-4 ${isActive('/leaderboard') ? 'bg-gray-100 font-medium' : 'hover:bg-gray-100'
+                    }`}
                 >
                   Leaderboard
                 </Link>

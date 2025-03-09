@@ -34,7 +34,6 @@ export default function TeamPage() {
             },
           });
 
-          console.log(res);
           if (!res.ok) throw new Error('Failed to fetch players');
 
           const data = await res.json();

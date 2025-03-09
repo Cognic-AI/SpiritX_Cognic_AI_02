@@ -41,7 +41,7 @@ const handler = NextAuth({
 
           // Return user object (don't include password)
           return {
-            id: user.username,
+            email: user.username,
             name: user.display_name,
             role: user.role_name,
             budget: user.budget,
@@ -62,14 +62,20 @@ const handler = NextAuth({
       if (user) {
         token.role = user.role;
         token.budget = user.budget;
+        token.email = user.email;
+        token.name = user.name;
       }
       return token;
     },
     async session({ session, token }) {
       // Add user role to the session from token
+
+      session.user = session.user || {};
       if (token) {
         session.user.role = token.role;
         session.user.budget = token.budget;
+        session.user.email = token.email;
+        session.user.name = token.name;
       }
       return session;
     },
@@ -81,4 +87,4 @@ const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
 });
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, handler as authOptions };
